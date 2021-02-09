@@ -63,6 +63,38 @@ protected:
 		return true;
 	}
 
+	boolean Intersect3(olc::vf2d line_r1s, olc::vf2d line_r1e, olc::vf2d line_r2s, olc::vf2d line_r2e, olc::vf2d& hitLoc) {
+		//From https://stackoverflow.com/a/1968345/8109619
+		float p0_x = line_r1s.x;
+		float p0_y = line_r1s.y;
+		float p1_x = line_r1e.x;
+		float p1_y = line_r1e.y;
+		float p2_x = line_r2s.x;
+		float p2_y = line_r2s.y;
+		float p3_x = line_r2e.x;
+		float p3_y = line_r2e.y;
+
+		float s1_x, s1_y, s2_x, s2_y;
+		s1_x = p1_x - p0_x;     s1_y = p1_y - p0_y;
+		s2_x = p3_x - p2_x;     s2_y = p3_y - p2_y;
+
+		float s, t;
+		float h = -s2_x * s1_y + s1_x * s2_y;
+		s = (-s1_y * (p0_x - p2_x) + s1_x * (p0_y - p2_y)) / h;
+		t = (s2_x * (p0_y - p2_y) - s2_y * (p0_x - p2_x)) / h;
+
+		if (s >= 0.0f && s <= 1.0f && t >= 0.0f && t <= 1.0f)
+		{
+			// Collision detected
+			float i_x = p0_x + (t * s1_x);
+			float i_y = p0_y + (t * s1_y);
+			hitLoc = olc::vf2d(i_x, i_y); //save hit location in hitLoc
+			return true;
+		}
+
+		return false; // No collision
+	}
+
 	void update(olc::vf2d ipos, float ivel, float iacc, olc::Key key, float fElapsedTime, olc::vf2d& opos, float& ovel, float& oacc)
 	{
 		// Inputs to temporary variables
@@ -85,10 +117,30 @@ protected:
 		vel += acc * fElapsedTime;
 		pos.y = std::clamp(pos.y + vel * fElapsedTime, 0.0f, ScreenHeight() - size.y);
 
-		if (ballPos.x > pos.x - ballRadius * 0.5f)
-		{
+		float balr = ballRadius * 0.6f;
+
+		olc::vf2d hitLoc;
+		boolean hitLeft = Intersect3(pos, { pos.x, pos.y + size.y }, ballPos, ballPos + (ballVel * fElapsedTime), hitLoc);
+		boolean hitRight = Intersect3({ pos.x + size.x, pos.y }, { pos.x + size.x, pos.y + size.y }, ballPos, ballPos + (ballVel * fElapsedTime), hitLoc);
+		boolean hitTop = Intersect3(pos, { pos.x + size.x, pos.y }, ballPos, ballPos + (ballVel * fElapsedTime), hitLoc);
+		boolean hitBottom = Intersect3({ pos.x + size.x, pos.y + size.y }, { pos.x, pos.y + size.y }, ballPos, ballPos + (ballVel * fElapsedTime), hitLoc);
+
+		if (hitLeft || hitRight)
 			ballVel.x *= -1;
-		}
+
+		if (hitTop || hitBottom)
+			ballVel.y *= -1;
+
+		//if (ballPos.x < pos.x + size.x + balr && ballPos.x > pos.x - balr &&
+		//	ballPos.y < pos.y + size.y + balr && ballPos.y > pos.y - balr) //ball goes inside paddle
+		//{
+		//	ballVel.x *= -1;
+		//}
+		//if (ballPos.y > pos.y + size.y && ballPos.y < pos.y &&
+		//	ballPos.x < pos.x && ballPos.x > pos.x + size.x) //ball touches paddle top or bottom
+		//{
+		//	ballVel.y *= -1;
+		//}
 
 
 		// Temporary variables to outputs
@@ -99,6 +151,8 @@ protected:
 
 	bool OnUserUpdate(float fElapsedTime) override
 	{
+		Clear(olc::VERY_DARK_BLUE);
+
 		// Physics
 
 		//Paddles
@@ -125,14 +179,12 @@ protected:
 			resetBall();
 		}
 		//right
-		if (ballPos.x > ScreenWidth() + ballRadius * 2.5f)
+		if (ballPos.x > ScreenWidth() + ballRadius * 2.5f || GetKey(olc::SPACE).bPressed)
 		{
 			resetBall();
 		}
 
 		// Rendering
-
-		Clear(olc::DARK_BLUE);
 
 		//Paddles
 		FillRect(left.pos,  size, olc::WHITE);
