@@ -115,7 +115,7 @@ protected:
 			acc = gravity;
 
 		vel += acc * fElapsedTime;
-		pos.y = clamp(pos.y + vel * fElapsedTime, 0.0f, ScreenHeight() - size.y);
+		pos.y = std::clamp(pos.y + vel * fElapsedTime, 0.0f, ScreenHeight() - size.y);
 
 		float balr = ballRadius * 0.6f;
 
