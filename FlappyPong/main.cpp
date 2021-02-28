@@ -194,10 +194,10 @@ protected:
 		FillCircle(ballPos, ballRadius, olc::WHITE);
 
 		//Middle Dashed Line
-		int segLength = ScreenHeight() / 42;
-		for (int i = 0; i < ScreenHeight(); i += segLength * 2)
-			DrawLine(ScreenWidth() / 2, (int)std::round(i + segLength * 0.5f), ScreenWidth() / 2, (int)std::round(i + segLength * 1.5f), olc::WHITE);
+		DrawLine(ScreenWidth() / 2, 0, ScreenWidth() / 2, ScreenHeight(), olc::WHITE, 0x0FF00FF0);
 
+		if (GetKey(olc::Key::ESCAPE).bPressed)
+			return false;
 		return true;
 	}
 };
