@@ -16,11 +16,10 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - name: Checkout repository
+    - name: Checkout repository with submodules
       uses: actions/checkout@v2
-    
-    - name: Checkout submodules
-      run: git submodule update --init --recursive
+      with:
+        submodules: recursive
       
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1
