@@ -63,7 +63,7 @@ protected:
 		return true;
 	}
 
-	boolean Intersect3(olc::vf2d line_r1s, olc::vf2d line_r1e, olc::vf2d line_r2s, olc::vf2d line_r2e, olc::vf2d& hitLoc) {
+	bool Intersect3(olc::vf2d line_r1s, olc::vf2d line_r1e, olc::vf2d line_r2s, olc::vf2d line_r2e, olc::vf2d& hitLoc) {
 		//From https://stackoverflow.com/a/1968345/8109619
 		float p0_x = line_r1s.x;
 		float p0_y = line_r1s.y;
@@ -120,10 +120,10 @@ protected:
 		float balr = ballRadius * 0.6f;
 
 		olc::vf2d hitLoc;
-		boolean hitLeft = Intersect3(pos, { pos.x, pos.y + size.y }, ballPos, ballPos + (ballVel * fElapsedTime), hitLoc);
-		boolean hitRight = Intersect3({ pos.x + size.x, pos.y }, { pos.x + size.x, pos.y + size.y }, ballPos, ballPos + (ballVel * fElapsedTime), hitLoc);
-		boolean hitTop = Intersect3(pos, { pos.x + size.x, pos.y }, ballPos, ballPos + (ballVel * fElapsedTime), hitLoc);
-		boolean hitBottom = Intersect3({ pos.x + size.x, pos.y + size.y }, { pos.x, pos.y + size.y }, ballPos, ballPos + (ballVel * fElapsedTime), hitLoc);
+		bool hitLeft = Intersect3(pos, { pos.x, pos.y + size.y }, ballPos, ballPos + (ballVel * fElapsedTime), hitLoc);
+		bool hitRight = Intersect3({ pos.x + size.x, pos.y }, { pos.x + size.x, pos.y + size.y }, ballPos, ballPos + (ballVel * fElapsedTime), hitLoc);
+		bool hitTop = Intersect3(pos, { pos.x + size.x, pos.y }, ballPos, ballPos + (ballVel * fElapsedTime), hitLoc);
+		bool hitBottom = Intersect3({ pos.x + size.x, pos.y + size.y }, { pos.x, pos.y + size.y }, ballPos, ballPos + (ballVel * fElapsedTime), hitLoc);
 
 		if (hitLeft || hitRight)
 			ballVel.x *= -1;
