@@ -1,0 +1,33 @@
+name: Build Linux
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository with submodules
+      uses: actions/checkout@v3.5.3
+      with:
+        submodules: recursive
+
+    - name: Setup Premake5
+      uses: abel0b/setup-premake@v2.3
+      with:
+        version: "5.0.0-beta2"
+
+    - name: Generate solution file with premake
+      run: premake5 gmake2
+
+    - name: Build
+      run: make config=release
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3.1.2
+      with:
+        name: artifact-linux
+        path: ./bin
