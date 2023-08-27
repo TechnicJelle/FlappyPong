@@ -11,7 +11,7 @@ jobs:
 
     steps:
     - name: Setup OpenGL
-      uses: openrndr/setup-opengl@v1.1
+      run: sudo apt-get update && sudo apt-get install -y xorg-dev mesa-utils xvfb libgl1 freeglut3-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libxext-dev
 
     - name: Checkout repository with submodules
       uses: actions/checkout@v3.5.3
@@ -27,7 +27,7 @@ jobs:
       run: premake5 gmake2
 
     - name: Build
-      run: make config=release
+      run: DISPLAY=:0 xvfb-run -s '-screen 0 1024x768x24' make config=release
 
     - name: Upload artifact
       uses: actions/upload-artifact@v3.1.2
