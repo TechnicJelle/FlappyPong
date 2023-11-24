@@ -9,7 +9,7 @@ This project uses [Premake](https://premake.github.io) to generate the build fil
 When cloning this project, make sure to clone it recursively, because olcPixelGameEngine is included as submodule.
 
 ### Linux (Make)
-Assuming you already have a C++ compiler installed. If you don't your package manager should have one.  
+Assuming you already have a C++ compiler installed. If you don't, your system package manager should have one.  
 I use [GCC](https://gcc.gnu.org/), but you can also use [Clang](https://clang.llvm.org/), for example.
 
 1. Install [Premake](https://premake.github.io/download). Your package manager will probably have this, too
