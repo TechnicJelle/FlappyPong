@@ -3,6 +3,10 @@ The game is pretty simple: it's just Pong, but the paddles are controlled like F
 
 The buttons are Left and Right Shift.
 
+Play it right in your browser on PGEtinker!  
+https://pgetinker.com/s/SqJXHUWOpLx  
+(Here, the buttons are A and L)
+
 ## Building
 This project uses [Premake](https://premake.github.io) to generate the build files for your specific development environment.
 
