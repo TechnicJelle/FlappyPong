@@ -1,6 +1,7 @@
 name: Build Windows
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -20,12 +21,12 @@ jobs:
 
     steps:
     - name: Checkout repository with submodules
-      uses: actions/checkout@v3.5.3
+      uses: actions/checkout@v4
       with:
         submodules: recursive
 
     - name: Setup Premake5
-      uses: abel0b/setup-premake@v2.3
+      uses: abel0b/setup-premake@v2.4
       with:
         version: "5.0.0-beta2"
 
@@ -33,7 +34,7 @@ jobs:
       run: premake5 vs2022
 
     - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v1.3.1
+      uses: microsoft/setup-msbuild@v2
 
     - name: Build
       working-directory: ${{ github.WORKSPACE }}
@@ -42,7 +43,7 @@ jobs:
       run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v3.1.2
+      uses: actions/upload-artifact@v4
       with:
         name: artifact-windows
         path: ./bin

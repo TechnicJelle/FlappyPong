@@ -1,6 +1,7 @@
 name: Build Linux
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -14,12 +15,12 @@ jobs:
       run: sudo apt-get update && sudo apt-get install -y xorg-dev mesa-utils xvfb libgl1 freeglut3-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libxext-dev
 
     - name: Checkout repository with submodules
-      uses: actions/checkout@v3.5.3
+      uses: actions/checkout@v4
       with:
         submodules: recursive
 
     - name: Setup Premake5
-      uses: abel0b/setup-premake@v2.3
+      uses: abel0b/setup-premake@v2.4
       with:
         version: "5.0.0-beta2"
 
@@ -30,7 +31,7 @@ jobs:
       run: DISPLAY=:0 xvfb-run -s '-screen 0 1024x768x24' make config=release
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v3.1.2
+      uses: actions/upload-artifact@v3
       with:
         name: artifact-linux
         path: ./bin
