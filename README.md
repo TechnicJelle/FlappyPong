@@ -4,7 +4,7 @@ The game is pretty simple: it's just Pong, but the paddles are controlled like F
 The buttons are Left and Right Shift.
 
 Play it right in your browser on PGEtinker!  
-https://pgetinker.com/s/SqJXHUWOpLx  
+https://pgetinker.com/s/9GMVbVTDdxQ  
 (Here, the buttons are A and L)
 
 ## Building
